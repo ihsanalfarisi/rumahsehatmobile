@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import '../screen/home_screen.dart';
 import '../screen/tabs_screen.dart';
+import '../screen/register_screen.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+const SERVER_IP = 'http://localhost:8080';
+final storage = FlutterSecureStorage();
 
 void main() {
   runApp(MyApp());
@@ -37,7 +42,10 @@ class _MyAppState extends State<MyApp> {
             )),
       ),
       initialRoute: '/',
-      routes: {'/': (ctx) => TabsScreen()},
+      routes: {
+        '/': (ctx) => TabsScreen(),
+        RegisterScreen.routeName: (ctx) => RegisterScreen()
+      },
       // ignore: missing_return
       onGenerateRoute: (settings) {
         print(settings.arguments);
