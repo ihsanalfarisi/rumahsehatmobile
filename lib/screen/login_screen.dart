@@ -199,7 +199,7 @@ class _LoginScreentate extends State<LoginScreen> {
                       TextButton(
                         style: TextButton.styleFrom(
                           textStyle: const TextStyle(fontSize: 20),
-                          foregroundColor: Colors.red,
+                          // foregroundColor: Colors.red,
                         ),
                         onPressed: () {
                           Navigator.of(context)

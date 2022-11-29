@@ -3,6 +3,8 @@ import 'package:tk_flutter/screen/login_screen.dart';
 import '../screen/home_screen.dart';
 import '../screen/tabs_screen.dart';
 import '../screen/register_screen.dart';
+import '../screen/appointment_screen.dart';
+import '../screen/form_appointment.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -64,7 +66,10 @@ class _MyAppState extends State<MyApp> {
       ),
       home: entryPage,
       routes: {
+        // '/': (ctx) => TabsScreen(),
         RegisterScreen.routeName: (ctx) => RegisterScreen(),
+        FormAppointment.routeName: (ctx) => FormAppointment(),
+        AppointmentScreen.routeName: (ctx) => AppointmentScreen(),
         LoginScreen.routeName: (ctx) => LoginScreen()
       },
       // ignore: missing_return
