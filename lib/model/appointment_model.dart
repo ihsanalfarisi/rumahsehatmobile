@@ -9,7 +9,7 @@ class Appointment {
     final bool isDone;
     final Dokter dokter;
     final Pasien pasien;
-    final Resep resep;
+    final Resep? resep;
 
     Appointment({
       required this.kode,
@@ -25,7 +25,7 @@ class Appointment {
         waktuAwal: DateTime.parse(json['waktuAwal']),
         isDone: json['isDone'] == "true"? true : false,
         dokter: Dokter.fromJson(json["dokter"]),
-        resep: Resep.fromJson(json["resep"]),
+        resep: json['resep'] == null ? null : Resep.fromJson(json["resep"]),
         pasien: Pasien.fromJson(json["pasien"]),
       );
 
