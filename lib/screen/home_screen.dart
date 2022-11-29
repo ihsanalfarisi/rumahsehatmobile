@@ -23,26 +23,6 @@ class HomeScreen extends StatelessWidget {
                 letterSpacing: 2,
                 wordSpacing: 5,
               )),
-          ElevatedButton(
-              child: Text("Login"),
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.transparent),
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black)),
-              onPressed: () {
-                Navigator.of(context).pushNamed("/");
-              }),
-          ElevatedButton(
-              child: Text("Belum punya akun? Register"),
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.transparent),
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black)),
-              onPressed: () {
-                Navigator.of(context).pushNamed(RegisterScreen.routeName);
-              })
         ])
       ],
     );

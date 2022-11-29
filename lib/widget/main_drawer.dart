@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:tk_flutter/screen/login_screen.dart';
 
 class MainDrawer extends StatefulWidget {
   const MainDrawer({Key? key}) : super(key: key);
@@ -8,6 +10,7 @@ class MainDrawer extends StatefulWidget {
 }
 
 class _MainDrawerState extends State<MainDrawer> {
+  FlutterSecureStorage storage = FlutterSecureStorage();
   Widget buildListTile(String title, IconData icon, VoidCallback tapHandler) {
     return ListTile(
       leading: Icon(
@@ -58,43 +61,18 @@ class _MainDrawerState extends State<MainDrawer> {
                       wordSpacing: 5,
                     )),
                 SizedBox(height: 50),
-              ])
-              // )
-              // : UserAccountsDrawerHeader(
-              //     accountName: Text(user.user[0]['username']),
-              //     accountEmail: Text(user.user[0]['email']),
-              //   ),
-              ),
+              ])),
           buildListTile('Beranda', Icons.home, () {
             Navigator.of(context).pushNamed('/');
           }),
           buildListTile('Appointment', Icons.note_add, () {
             Navigator.of(context).pushNamed('/');
           }),
-          // buildListTile('Info Statistik', Icons.insert_chart, () {
-          //   // karena login belom ada userID nya 1 dulu
-          //   Navigator.of(context).pushNamed(Loading.routeName, arguments: {
-          //     "userID": user.user[0]['userID'],
-          //     "task": "fetchData"
-          //   });
-          // }),
-          // buildListTile('Regulasi', Icons.fact_check, () {
-          //   Navigator.of(context).pushNamed(RegulasiScreen.routeName);
-          // }),
-          // buildListTile('Get Swabbed!', Icons.health_and_safety, () {
-          //   Navigator.of(context).pushReplacementNamed(FormSwabState.routeName);
-          // }),
-          // buildListTile('Info Hotel Karantina', Icons.hotel, () {
-          //   Navigator.of(context).pushNamed(HotelScreen.routeName);
-          // }),
-          // buildListTile('Artikel', Icons.article, () {
-          //   Navigator.of(context).pushNamed(ListArtikelState.routeName);
-          // }),
-          // buildListTile('Support', Icons.help, () {
-          //   Navigator.of(context).pushNamed(SupportScreen.routeName);
-          // }),
-          // Container(
-          //     child: user.user[0]['status'] == 'logged off' ? null : _logout())
+          buildListTile('Logout', Icons.logout, () {
+            storage.delete(key: "jwttoken");
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                LoginScreen.routeName, (route) => false);
+          }),
         ],
       ),
     );

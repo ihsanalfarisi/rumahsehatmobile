@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../main.dart';
 import 'package:intl/intl.dart';
-// import 'user.dart' as user;
+import '../request_handler.dart';
+import '../screen/tabs_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -19,17 +20,18 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _registerFormKey = GlobalKey<FormState>();
-  final Map<String, dynamic> formData = {
-    'email': null,
-    'username': null,
-    'nama': null,
-    'password': null,
-    'umur': null
-  };
   bool _isPasswordVisible = false;
   bool _isConfPasswordVisible = false;
+  int _umur = 0;
+  bool _isDuplicateIdentifier = false;
+  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _namaController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confPasswordController = TextEditingController();
   final _birthDateController = TextEditingController();
+  RequestHandler requestHandler = RequestHandler();
+
   void _togglePasswordView() {
     setState(() {
       _isPasswordVisible = !_isPasswordVisible;
@@ -42,30 +44,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
-  Future<http.Response> signUp() async {
-    print(formData);
-    final res = await http.post(Uri.parse("$SERVER_IP/api/v1/auth/register"),
-        headers: <String, String>{
-          'Content-Type': 'application/json;charset=UTF-8',
-        },
-        body: jsonEncode(formData));
-    return res;
-  }
+  // Future<http.Response> signUp() async {
+  //   print(formData);
+  //   final res = await http.post(Uri.parse("$SERVER_IP/api/v1/auth/register"),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json;charset=UTF-8',
+  //       },
+  //       body: jsonEncode(formData));
+  //   return res;
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios),
+          color: Colors.black,
+
+          //replace with our own icon data.
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
-      drawer: MainDrawer(),
       resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
       backgroundColor: Theme.of(context).canvasColor,
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(30),
           child: Column(
             children: <Widget>[
+              // IconButton(
+              //   onPressed: () {
+              //     Navigator.pop(context);
+              //   },
+              //   icon: Icon(Icons.arrow_back_ios),
+              //   alignment: ALIGNMENT.,
+              //   //replace with our own icon data.
+              // ),
               Text("Join RumahSehat",
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -74,6 +94,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       fontWeight: FontWeight.w700,
                       letterSpacing: 2,
                       wordSpacing: 5)),
+
+              SizedBox(height: 20),
+              Text(
+                  _isDuplicateIdentifier
+                      ? "Username or email already registered"
+                      : "",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.red,
+                  )),
               SizedBox(height: 20),
 // Form
 // Email
@@ -88,9 +119,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: TextFormField(
-                          onSaved: (String? value) {
-                            formData['email'] = value;
-                          },
+                          // onSaved: (String? value) {
+                          //   formData['email'] = value;
+                          // },
+                          controller: _emailController,
                           decoration: InputDecoration(
                             hintText: 'Email',
                             hintStyle: TextStyle(
@@ -125,9 +157,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: TextFormField(
-                          onSaved: (String? value) {
-                            formData['username'] = value;
-                          },
+                          // onSaved: (String? value) {
+                          //   formData['username'] = value;
+                          // },
+                          controller: _usernameController,
                           decoration: InputDecoration(
                             hintText: 'Username',
                             hintStyle: TextStyle(
@@ -160,9 +193,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: TextFormField(
-                          onSaved: (String? value) {
-                            formData['nama'] = value;
-                          },
+                          // onSaved: (String? value) {
+                          //   formData['nama'] = value;
+                          // },
+                          controller: _namaController,
                           decoration: InputDecoration(
                             hintText: 'Nama',
                             hintStyle: TextStyle(
@@ -201,8 +235,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 firstDate: DateTime(1920),
                                 lastDate: DateTime.now());
                             if (pickedDate != null) {
-                              formData["umur"] =
-                                  DateTime.now().year - pickedDate.year;
+                              _umur = DateTime.now().year - pickedDate.year;
                               _birthDateController.text =
                                   DateFormat("yyyy-MM-dd").format(pickedDate);
                             }
@@ -220,7 +253,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (String? value) {
                             if (value == null || value.isEmpty) {
-                              return "Nama tidak boleh kosong";
+                              return "Tanggal lahir tidak boleh kosong";
                             }
                             return null;
                           },
@@ -236,9 +269,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: TextFormField(
-                            onSaved: (String? value) {
-                              formData['password'] = value;
-                            },
+                            // onSaved: (String? value) {
+                            //   formData['password'] = value;
+                            // },
                             controller: _passwordController,
                             obscureText: !_isPasswordVisible,
                             decoration: InputDecoration(
@@ -282,9 +315,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: TextFormField(
-                            onSaved: (String? value) {
-                              formData['password'] = value;
-                            },
+                            // onSaved: (String? value) {
+                            //   formData['password'] = value;
+                            // },
+                            controller: _confPasswordController,
                             obscureText: !_isConfPasswordVisible,
                             decoration: InputDecoration(
                               hintText: 'Confirm Password',
@@ -325,7 +359,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: TextButton(
                           style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.cyan),
+                                MaterialStateProperty.all<Color>(Colors.green),
                             foregroundColor:
                                 MaterialStateProperty.all<Color>(Colors.white),
                             overlayColor:
@@ -337,45 +371,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             }),
                           ),
                           onPressed: () async {
+                            // if (_registerFormKey.currentState!.validate()) {
+                            //   _registerFormKey.currentState?.save();
+                            //   final response = await signUp();
+                            //   if (response.statusCode == 200) {
+                            //     storage.write(key: "jwt", value: "jwt");
+                            //     Navigator.of(context)
+                            //         .pushNamed(HomeScreen.routeName);
+                            //   }
+                            // }
                             if (_registerFormKey.currentState!.validate()) {
-                              _registerFormKey.currentState?.save();
-                              final response = await signUp();
-                              if (response.statusCode == 200) {
-                                storage.write(key: "jwt", value: "jwt");
-                                Navigator.of(context)
-                                    .pushNamed(HomeScreen.routeName);
+                              Map<String, dynamic> formData = {
+                                "username": _usernameController.text,
+                                "password": _passwordController.text,
+                                "umur": _umur,
+                                "nama": _namaController.text,
+                                "email": _emailController.text
+                              };
+                              var response = await requestHandler.post(
+                                  "/api/v1/auth/register", formData);
+                              print(response.statusCode);
+                              if (response.statusCode == 200 ||
+                                  response.statusCode == 201) {
+                                Map<String, dynamic> output =
+                                    jsonDecode(response.body);
+                                print(output["jwttoken"]);
+                                await storage.write(
+                                    key: "jwttoken", value: output["jwttoken"]);
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TabsScreen(),
+                                    ),
+                                    (route) => false);
+                                print(await storage.read(key: "jwttoken"));
+                              } else if (response.statusCode == 400) {
+                                setState(() {
+                                  _isDuplicateIdentifier = true;
+                                });
                               }
                             }
-                            // print(username + " " + password);
-                            // if (_registerFormKey.currentState!.validate()) {
-                            //   final response = await http.post(
-                            // Uri.parse(
-                            //     "https://pbp-b07.herokuapp.com/loginf"),
-                            // headers: <String, String>{
-                            //   'Content-Type':
-                            //       'application/json;charset=UTF-8',
-                            // },
-                            //       body: jsonEncode(<String, String>{
-                            //         'username': username,
-                            //         'password': password,
-                            //       }));
-                            //   dynamic dataJSON =
-                            //       await jsonDecode(response.body);
-                            //   print(response);
-                            //   print(response.body);
-
-                            //   if (dataJSON["status"] == "logged in") {
-                            //     user.user.insert(0, dataJSON);
-                            //     print(user.user[0]['status']);
-                            //     print(user.user[0]);
-                            //     Navigator.pushNamed(context, "/", arguments: {
-                            //       "userID": dataJSON["userID"],
-                            //       "task": "fetchData"
-                            //     });
-                            //   }
-                            // } else {
-                            //   print("Ga valid");
-                            // }
                           },
                           child: Text(
                             "Sign Up",
@@ -392,17 +427,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(
                 height: 10,
               ),
-              // RichText(
-              //   text: TextSpan(
-              //       text: "Belum memiliki akun?",
-              //       style: TextStyle(
-              //         color: Colors.black,
-              //       ),
-              //       recognizer: TapGestureRecognizer()
-              //         ..onTap = () {
-              //           Navigator.popAndPushNamed(context, "/register");
-              //         }),
-              // ),
             ],
           ),
         ),
