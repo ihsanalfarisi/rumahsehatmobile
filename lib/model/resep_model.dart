@@ -14,9 +14,9 @@ class Resep {
   });
 
   factory Resep.fromJson(Map<String, dynamic> json) => Resep(
-        id: json["kode"],
+        id: json["id"],
         isDone: json['isDone'] == "true"? true : false,
-        createdAt: DateTime.parse(json['waktuAwal']),
+        createdAt: DateTime.parse(json['createdAt']),
       );
 
   Map<dynamic, dynamic> toJson() => {
