@@ -65,8 +65,11 @@ class _MainDrawerState extends State<MainDrawer> {
           buildListTile('Beranda', Icons.home, () {
             Navigator.of(context).pushNamed('/');
           }),
-          buildListTile('Appointment', Icons.note_add, () {
-            Navigator.of(context).pushNamed('/');
+          buildListTile('Add Appointment', Icons.note_add, () {
+            Navigator.of(context).pushNamed('/appointment/add');
+          }),
+          buildListTile('My Appointment', Icons.note, () {
+            Navigator.of(context).pushNamed('/appointment');
           }),
           buildListTile('Logout', Icons.logout, () {
             storage.delete(key: "jwttoken");
