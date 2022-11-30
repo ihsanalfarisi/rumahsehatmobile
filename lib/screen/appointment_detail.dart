@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tk_flutter/widget/main_drawer.dart';
 import 'package:tk_flutter/model/appointment_model.dart';
+import '../main.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'dart:convert';
 
 class AppointmentDetail extends StatelessWidget {
   final Appointment appointment;
 
   const AppointmentDetail({Key? key, required this.appointment})
       : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {

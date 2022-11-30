@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../main.dart';
 import 'package:intl/intl.dart';
-
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'appointment_detail.dart';
 
 class AppointmentScreen extends StatefulWidget {
@@ -23,15 +23,18 @@ class AppointmentScreen extends StatefulWidget {
 
 class _AppointmentState extends State<AppointmentScreen> {
   Future<List<Appointment>> fetchAppointment() async {
-  var url = 'http://localhost:8080/api/v1/appointment/list-appointment';
+    String? token = await storage.read(key: "jwttoken");
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
+    String username = decodedToken["sub"];
+    var url = 'http://localhost:8080/api/v1/appointment/list-appointment';
   Map<String, String> queryParams = {
-    'username': 'pasien1',
+    'username': '$username',
   };
   Map<String, String> requestHeaders = {
     "Access-Control-Allow-Origin": "*",
     'Content-type': 'application/json',
     'Accept': '*/*',
-    'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNpZW4xIiwiZXhwIjoxNjY5NzQ2OTQ3LCJpYXQiOjE2Njk3Mjg5NDd9._8Py0fDvjp0yPX3_JkH4ePpjzdNG0HRDs_O-B--IW4__G6zCfGp_KXufOlK70AA4bnQ4ZglwDCjmJNcSIthLyw'
+    'Authorization': 'Bearer $token'
   };
 
   Uri uri = Uri.parse(url);
