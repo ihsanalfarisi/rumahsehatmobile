@@ -1,7 +1,6 @@
 import 'dart:core';
 import '../model/dokter_model.dart';
 import '../model/pasien_model.dart';
-import '../model/resep_model.dart';
 
 class Appointment {
     final String kode;
@@ -9,7 +8,7 @@ class Appointment {
     final bool isDone;
     final Dokter dokter;
     final Pasien pasien;
-    final Resep? resep;
+    final bool resep;
 
     Appointment({
       required this.kode,
@@ -25,7 +24,7 @@ class Appointment {
         waktuAwal: DateTime.parse(json['waktuAwal']),
         isDone: json['isDone'] == "true"? true : false,
         dokter: Dokter.fromJson(json["dokter"]),
-        resep: json['resep'] == null ? null : Resep.fromJson(json["resep"]),
+        resep: json['resep'] == null ? false : true,
         pasien: Pasien.fromJson(json["pasien"]),
       );
 
