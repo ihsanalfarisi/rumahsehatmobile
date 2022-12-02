@@ -8,6 +8,7 @@ import '../main.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class FormAppointment extends StatefulWidget {
   const FormAppointment({Key? key}) : super(key: key);
@@ -24,11 +25,13 @@ class _FormAppointmentState extends State<FormAppointment> {
   TextEditingController timeController = TextEditingController();
   Future<int> postAppointment() async {
     SharedPreferences prefrences = await SharedPreferences.getInstance();
-    var token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNpZW4xIiwiZXhwIjoxNjY5NjYwNjk5LCJpYXQiOjE2Njk2NDI2OTl9.vLXg3-45GV-j2ifY1vXFJLZ9Y2it9qDnVY-oMjDvgC99r5XBBNOMcahjqVI4-0Mon4fNMDhtPipQYnBbeaJ_Iw';
-    var username = 'pasien1';
-    // String? uuid = prefrences.getString('uuid');
+    String? token = await storage.read(key: "jwttoken");
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
+    String username = decodedToken["sub"];
+
     String? tanggal = prefrences.getString('date');
     String? jam = prefrences.getString('jam');
+    String? uuid = prefrences.getString('uuid');
     int lengthjam = jam!.length;
     String nol = '0';
     if (lengthjam == 1) {
@@ -54,7 +57,7 @@ class _FormAppointmentState extends State<FormAppointment> {
           'Authorization': 'Bearer $token',
         },
         body:
-          jsonEncode({"usernamePasien": username, "waktu": waktu}));
+          jsonEncode({"idDokter": uuid, "usernamePasien": username, "waktuAwal": waktu}));
     if (response.statusCode == 200) {
       var appoinmentArr = json.decode(response.body);
       var waktuawal = appoinmentArr['waktuawal'];
@@ -127,7 +130,7 @@ class _FormAppointmentState extends State<FormAppointment> {
             TextButton(
               child: const Text('Isi Form',
                   style: TextStyle(
-                      color: Colors.blue,
+                      color: Colors.green,
                       fontSize: 16,
                       fontWeight: FontWeight.bold)),
               onPressed: () {
@@ -149,16 +152,14 @@ class _FormAppointmentState extends State<FormAppointment> {
     final ButtonStyle style = ElevatedButton.styleFrom(
         padding: EdgeInsets.all(20),
         textStyle: TextStyle(color: Colors.white),
+        primary: Colors.green[600],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-        ),);
+        ));
 
     String? baru;
     var myFormat = DateFormat('dd-MM-yyyy');
-    return MaterialApp(
-      theme: new ThemeData(scaffoldBackgroundColor: Colors.white),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text(
             'FORM APPOINTMENT',
@@ -185,18 +186,17 @@ class _FormAppointmentState extends State<FormAppointment> {
                   padding: const EdgeInsets.only(
                       top: 10.0, bottom: 0.0, left: 10.0, right: 10.0),
                   child: Container(
-                    margin: const EdgeInsets.all(10.0),
-                    padding: const EdgeInsets.all(10.0),
+                    margin: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.all(5.0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(blurRadius: 2.0, offset: Offset(0, 2))
-                        ]), //             <--- BoxDecoration here
+                        ]),
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                        // _dateOfDay.toString(),
                         myFormat.format(_dateOfDay).toString(),
                         style: const TextStyle(fontSize: 22),
                       ),
@@ -205,10 +205,10 @@ class _FormAppointmentState extends State<FormAppointment> {
                 ),
                 MaterialButton(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   onPressed: _showDatePicker,
-                  color: Colors.blueAccent,
+                  color: Colors.green[600],
                   child: const Padding(
                     padding: EdgeInsets.all(10.0),
                     child: Text('PILIH TANGGAL',
@@ -221,16 +221,16 @@ class _FormAppointmentState extends State<FormAppointment> {
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.only(
-                      top: 10.0, bottom: 0.0, left: 10.0, right: 10.0),
+                      top: 5.0, bottom: 0.0, left: 10.0, right: 10.0),
                   child: Container(
-                    margin: const EdgeInsets.all(10.0),
-                    padding: const EdgeInsets.all(10.0),
+                    margin: const EdgeInsets.all(5.0),
+                    padding: const EdgeInsets.all(5.0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
                         boxShadow: [
                           BoxShadow(blurRadius: 2.0, offset: Offset(0, 2))
-                        ]), //             <--- BoxDecoration here
+                        ]),
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
@@ -242,10 +242,10 @@ class _FormAppointmentState extends State<FormAppointment> {
                 ),
                 MaterialButton(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   onPressed: _showTimePicker,
-                  color: Colors.blue,
+                  color: Colors.green[600],
                   child: const Padding(
                     padding: EdgeInsets.all(10.0),
                     child: Text('PILIH JAM',
@@ -256,7 +256,6 @@ class _FormAppointmentState extends State<FormAppointment> {
                   height: 10,
                 ),
                 DropdownSearch<dynamic>(
-                    //you can design textfield here as you want
                     dropdownSearchDecoration: const InputDecoration(
                       fillColor: Colors.white,
                       focusColor: Colors.white,
@@ -266,17 +265,12 @@ class _FormAppointmentState extends State<FormAppointment> {
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 0, horizontal: 12),
                     ),
-
-                    //have two mode: menu mode and dialog mode
                     mode: Mode.MENU,
-                    //if you want show search box
                     showSearchBox: true,
-
-                    //get data from the internet
                     onFind: (text) async {
                       SharedPreferences prefrences =
                           await SharedPreferences.getInstance();
-                      var token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwYXNpZW4xIiwiZXhwIjoxNjY5NjYwNjk5LCJpYXQiOjE2Njk2NDI2OTl9.vLXg3-45GV-j2ifY1vXFJLZ9Y2it9qDnVY-oMjDvgC99r5XBBNOMcahjqVI4-0Mon4fNMDhtPipQYnBbeaJ_Iw';
+                      String? token = await storage.read(key: "jwttoken");
                       var response = await http.get(
                           Uri.parse(
                               "http://localhost:8080/api/v1/appointment/list-dokter/"),
@@ -292,7 +286,6 @@ class _FormAppointmentState extends State<FormAppointment> {
                         setState(() {
                           _listDokter = listdata;
                         });
-                        //print(listdata);
                       }
 
                       return _listDokter as List<dynamic>;
@@ -304,15 +297,11 @@ class _FormAppointmentState extends State<FormAppointment> {
                         int tarif;
                         namaDokter = text['username'];
                       });
-                      // print(text['uuid']);
-                      // prefrences.setString('uuid', text['uuid']);
+                      prefrences.setString('uuid', text['uuid']);
                     },
-
-                    //this data appear in dropdown after clicked
                     itemAsString: (item) =>
-                        "Dr." +
                         item['username'] +
-                        " Tarif =" +
+                        " - Rp" +
                         item['tarif'].toString()),
                 const SizedBox(
                   height: 10,
@@ -321,19 +310,19 @@ class _FormAppointmentState extends State<FormAppointment> {
                   height: 10,
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
                   child: ElevatedButton(
                     style: style,
                     onPressed: () async {
-                      int status = await postAppointment();
-                      if (status == 200) {
-                        Navigator.of(context).pushNamed(HomeScreen.routeName);
+                      int code = await postAppointment();
+                      if (code == 200) {
+                        Navigator.of(context).pushNamed('/');
                       } else {
                         _showMyDialog();
                       }
                     },
                     child: const Text(
-                      'Submit',
+                      'submit',
                     ),
                   ),
                 ),
@@ -341,7 +330,6 @@ class _FormAppointmentState extends State<FormAppointment> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
