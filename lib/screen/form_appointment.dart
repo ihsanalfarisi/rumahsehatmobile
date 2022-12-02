@@ -316,7 +316,7 @@ class _FormAppointmentState extends State<FormAppointment> {
                     onPressed: () async {
                       int code = await postAppointment();
                       if (code == 200) {
-                        Navigator.of(context).pushNamed('/');
+                        Navigator.of(context).pushNamed('/appointment');
                       } else {
                         _showMyDialog();
                       }
