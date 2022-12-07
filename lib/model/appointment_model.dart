@@ -22,7 +22,7 @@ class Appointment {
   factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
         kode: json["kode"],
         waktuAwal: DateTime.parse(json['waktuAwal']),
-        isDone: json['isDone'] == "true"? true : false,
+        isDone: json['isDone'],
         dokter: Dokter.fromJson(json["dokter"]),
         resep: json['resep'] == null ? false : true,
         pasien: Pasien.fromJson(json["pasien"]),
