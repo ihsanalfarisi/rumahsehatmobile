@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tk_flutter/screen/login_screen.dart';
+import 'package:tk_flutter/screen/profile_screen.dart';
 import '../screen/home_screen.dart';
 import '../screen/tabs_screen.dart';
 import '../screen/register_screen.dart';
@@ -70,7 +71,8 @@ class _MyAppState extends State<MyApp> {
         RegisterScreen.routeName: (ctx) => RegisterScreen(),
         FormAppointment.routeName: (ctx) => FormAppointment(),
         AppointmentScreen.routeName: (ctx) => AppointmentScreen(),
-        LoginScreen.routeName: (ctx) => LoginScreen()
+        LoginScreen.routeName: (ctx) => LoginScreen(),
+        ProfileScreen.routeName: (ctx) => ProfileScreen()
       },
       // ignore: missing_return
       onGenerateRoute: (settings) {
