@@ -71,6 +71,9 @@ class _MainDrawerState extends State<MainDrawer> {
           buildListTile('My Appointment', Icons.note, () {
             Navigator.of(context).pushNamed('/appointment');
           }),
+          buildListTile('My Bill', Icons.note, () {
+            Navigator.of(context).pushNamed('/tagihan');
+          }),
           buildListTile('Logout', Icons.logout, () {
             storage.delete(key: "jwttoken");
             Navigator.of(context).pushNamedAndRemoveUntil(

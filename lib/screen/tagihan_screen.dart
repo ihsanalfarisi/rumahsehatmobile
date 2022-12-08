@@ -2,8 +2,8 @@ import 'dart:convert';
 // import 'dart:html';
 import 'package:tk_flutter/screen/home_screen.dart';
 
+import '../model/tagihan_model.dart';
 import '../widget/main_drawer.dart';
-import '../model/appointment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../main.dart';
@@ -11,21 +11,21 @@ import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'appointment_detail.dart';
 
-class AppointmentScreen extends StatefulWidget {
-  const AppointmentScreen({Key? key}) : super(key: key);
+class TagihanScreen extends StatefulWidget {
+  const TagihanScreen({Key? key}) : super(key: key);
 
-  static const routeName = '/appointment';
+  static const routeName = '/tagihan';
 
   @override
-  State<AppointmentScreen> createState() => _AppointmentState();
+  State<TagihanScreen> createState() => _TagihantState();
 }
 
-class _AppointmentState extends State<AppointmentScreen> {
-  Future<List<Appointment>> fetchAppointment() async {
+class _TagihantState extends State<TagihanScreen> {
+  Future<List<Tagihan>> fetchTagihan() async {
     String? token = await storage.read(key: "jwttoken");
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
     String username = decodedToken["sub"];
-    var url = 'http://localhost:8080/api/v1/appointment/list-appointment';
+    var url = 'http://localhost:8080/api/v1/tagihan/list-tagihan';
     Map<String, String> queryParams = {
       'username': '$username',
     };
@@ -35,46 +35,48 @@ class _AppointmentState extends State<AppointmentScreen> {
       'Accept': '*/*',
       'Authorization': 'Bearer $token'
     };
-
     Uri uri = Uri.parse(url);
     final finalUri = uri.replace(queryParameters: queryParams);
     final response = await http.get(
       finalUri,
       headers: requestHeaders,
     );
-    print(finalUri);
+    // print(finalUri);
+    // print("cony");
 
     if (response.statusCode == 200) {
       var data = jsonDecode(utf8.decode(response.bodyBytes));
-      List<Appointment> listAppointment = [];
+      // print(data);
+      List<Tagihan> listTagihan = [];
 
       for (var d in data) {
+        // print(d);
         if (d != null) {
-          listAppointment.add(Appointment.fromJson(d));
+          listTagihan.add(Tagihan.fromJson(d));
         }
       }
-      return listAppointment;
+      return listTagihan;
     } else {
-      throw Exception('Failed to load appointment');
+      throw Exception('Failed to load tagihan');
     }
   }
 
-  late Future<List<Appointment>> futureAppointment;
+  late Future<List<Tagihan>> futureTagihan;
   @override
   void initState() {
     super.initState();
-    futureAppointment = fetchAppointment();
+    futureTagihan = fetchTagihan();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('My Appointment'),
+          title: const Text('My Bill'),
         ),
         drawer: const MainDrawer(),
         body: FutureBuilder(
-            future: fetchAppointment(),
+            future: fetchTagihan(),
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.data == null) {
                 return const Center(child: CircularProgressIndicator());
@@ -83,7 +85,7 @@ class _AppointmentState extends State<AppointmentScreen> {
                   return Column(
                     children: const [
                       Text(
-                        "Belum ada appointment",
+                        "Belum ada tagihan",
                         style:
                             TextStyle(color: Color(0xff59A5D8), fontSize: 20),
                       ),
@@ -115,17 +117,15 @@ class _AppointmentState extends State<AppointmentScreen> {
                                     title: Text(snapshot.data![index].kode),
                                     subtitle: Column(
                                       children: [
-                                        Text("Dokter: " +
-                                            snapshot.data![index].dokter.nama),
-                                        Text("Waktu awal: " +
+                                        Text("Tanggal Terbuat: " +
                                             (DateFormat('d MMM yyy HH:mm:ss')
-                                                .format(snapshot
-                                                    .data![index].waktuAwal)
+                                                .format(snapshot.data![index]
+                                                    .tanggalTerbuat)
                                                 .toString())),
                                         Text("Status: " +
-                                            (snapshot.data![index].isDone
-                                                ? "Sudah selesai"
-                                                : "Belum selesai"))
+                                            (snapshot.data![index].isPaid
+                                                ? "Sudah Dibayar"
+                                                : "Belum Dibayar"))
                                       ],
                                     ))),
                           ));

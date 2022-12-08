@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tk_flutter/screen/appointment_screen.dart';
 import '../widget/main_drawer.dart';
 
 import 'home_screen.dart';
@@ -21,6 +22,10 @@ class _TabsScreenState extends State<TabsScreen> {
         'page': const HomeScreen(),
         'title': 'Rumah Sehat',
       },
+      // {
+      //   'page': AppointmentScreen(),
+      //   'title': 'My Appointment',
+      // },
     ];
     super.initState();
   }
