@@ -65,6 +65,9 @@ class _MainDrawerState extends State<MainDrawer> {
           buildListTile('Beranda', Icons.home, () {
             Navigator.of(context).pushNamed('/');
           }),
+          buildListTile('Profile', Icons.person, () {
+            Navigator.of(context).pushNamed('/profile');
+          }),
           buildListTile('Add Appointment', Icons.note_add, () {
             Navigator.of(context).pushNamed('/appointment/add');
           }),
