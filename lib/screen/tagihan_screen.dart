@@ -1,6 +1,7 @@
 import 'dart:convert';
 // import 'dart:html';
 import 'package:tk_flutter/screen/home_screen.dart';
+import 'package:tk_flutter/screen/tagihan_detail.dart';
 
 import '../model/tagihan_model.dart';
 import '../widget/main_drawer.dart';
@@ -107,10 +108,8 @@ class _TagihantState extends State<TagihanScreen> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) =>
-                                                AppointmentDetail(
-                                              appointment:
-                                                  snapshot.data![index],
+                                            builder: (context) => TagihanDetail(
+                                              tagihan: snapshot.data![index],
                                             ),
                                           ));
                                     },
