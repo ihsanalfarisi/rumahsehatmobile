@@ -13,6 +13,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 final storage = FlutterSecureStorage();
+// final SERVER_URL = "http://localhost:8080";
+final SERVER_URL = "https://apap-072.cs.ui.ac.id";
 
 void main() {
   runApp(MyApp());

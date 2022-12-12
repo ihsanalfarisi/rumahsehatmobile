@@ -42,7 +42,7 @@ class _TagihantDetail extends State<TagihanDetail> {
         String? token = await storage.read(key: "jwttoken");
         Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
         String kode = tagihan.kode;
-        var url1 = 'http://localhost:8080/api/v1/pasien/bayar';
+        var url1 = '$SERVER_URL/api/v1/pasien/bayar';
         Map<String, String> queryParams = {
           'kode': '$kode',
         };
@@ -61,7 +61,7 @@ class _TagihantDetail extends State<TagihanDetail> {
         print(finalUri1);
 
         if (response.statusCode == 200) {
-          var url2 = 'http://localhost:8080/api/v1/tagihan/bayar';
+          var url2 = 'http://$SERVER_URL/api/v1/tagihan/bayar';
           Uri uri2 = Uri.parse(url2);
           final finalUri = uri2.replace(queryParameters: queryParams);
           final response = await http.post(

@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
       String username = decodedToken["sub"];
       homeData["username"] = username;
-      var url = 'http://localhost:8080/api/v1/home-data';
+      var url = '$SERVER_URL/api/v1/home-data';
       Map<String, String> queryParams = {
         'username': '$username',
       };

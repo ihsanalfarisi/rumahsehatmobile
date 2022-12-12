@@ -23,7 +23,7 @@ class _TopUpState extends State<TopUpScreen> {
     String username = decodedToken["sub"];
     String saldo = saldoController.text;
 
-    const url = 'http://localhost:8080/api/v1/pasien/topup';
+    var url = '$SERVER_URL/api/v1/pasien/topup';
 
     Map<String, String> queryParams = {
       'username': '$username',

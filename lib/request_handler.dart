@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
+import 'main.dart';
 
 class RequestHandler {
-  String baseurl = "http://localhost:8080";
   var log = Logger();
   FlutterSecureStorage storage = FlutterSecureStorage();
   Future get(String url) async {
@@ -41,6 +41,6 @@ class RequestHandler {
   }
 
   String formater(String url) {
-    return baseurl + url;
+    return SERVER_URL + url;
   }
 }

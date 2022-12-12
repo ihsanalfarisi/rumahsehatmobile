@@ -27,7 +27,7 @@ class ResepDetailScreen extends StatefulWidget {
 class _ResepDetailState extends State<ResepDetailScreen> {
   Future<List<JumlahObatResep>> fetchJumlahObatResep() async {
     String? token = await storage.read(key: "jwttoken");
-    var url = 'http://localhost:8080/api/v1/resep/list-jumlah-obat/' +
+    var url = '$SERVER_URL/api/v1/resep/list-jumlah-obat/' +
         widget.resep.id.toString();
 
     Map<String, String> requestHeaders = {
