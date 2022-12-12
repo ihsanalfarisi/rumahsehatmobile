@@ -45,26 +45,26 @@ class _TabsScreenState extends State<TabsScreen> {
       ),
       drawer: MainDrawer(),
       body: _pages[_selectedPageIndex]['page'] as Widget,
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: _selectPage,
-        backgroundColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.white,
-        selectedItemColor: Colors.white,
-        currentIndex: _selectedPageIndex,
-        // type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            backgroundColor: Colors.white,
-            icon: Icon(Icons.home),
-            label: 'Beranda',
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Theme.of(context).primaryColor,
-            icon: Icon(Icons.note_add),
-            label: 'Appointment',
-          ),
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   onTap: _selectPage,
+      //   backgroundColor: Theme.of(context).primaryColor,
+      //   unselectedItemColor: Colors.white,
+      //   selectedItemColor: Colors.white,
+      //   currentIndex: _selectedPageIndex,
+      //   // type: BottomNavigationBarType.fixed,
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       backgroundColor: Colors.white,
+      //       icon: Icon(Icons.home),
+      //       label: 'Beranda',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       backgroundColor: Theme.of(context).primaryColor,
+      //       icon: Icon(Icons.note_add),
+      //       label: 'Appointment',
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

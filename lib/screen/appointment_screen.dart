@@ -124,7 +124,7 @@ class _AppointmentState extends State<AppointmentScreen> {
                                                 .toString())),
                                         Text("Status: " +
                                             (snapshot.data![index].isDone
-                                                ? "Sudah selesai"
+                                                ? "Selesai"
                                                 : "Belum selesai"))
                                       ],
                                     ))),
