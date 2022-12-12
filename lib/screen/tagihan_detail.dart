@@ -58,17 +58,15 @@ class _TagihantDetail extends State<TagihanDetail> {
           finalUri1,
           headers: requestHeaders,
         );
-        print(finalUri1);
 
         if (response.statusCode == 200) {
-          var url2 = 'http://$SERVER_URL/api/v1/tagihan/bayar';
+          var url2 = '$SERVER_URL/api/v1/tagihan/bayar';
           Uri uri2 = Uri.parse(url2);
-          final finalUri = uri2.replace(queryParameters: queryParams);
+          final finalUri2 = uri2.replace(queryParameters: queryParams);
           final response = await http.post(
-            finalUri,
+            finalUri2,
             headers: requestHeaders,
           );
-          print(finalUri);
 
           if (response.statusCode == 200) {
             var data = jsonDecode(utf8.decode(response.bodyBytes));

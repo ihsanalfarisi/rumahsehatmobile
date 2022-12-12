@@ -141,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 width: 20.0,
                                 height: 10.0,
                               ),
-                              Text("Rp. $saldo ",
+                              Text("Rp$saldo,-",
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     fontSize: 40,
