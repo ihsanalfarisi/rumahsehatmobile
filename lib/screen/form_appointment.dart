@@ -48,7 +48,7 @@ class _FormAppointmentState extends State<FormAppointment> {
     String titikdua = ':';
     String? waktu = '$tanggal$separator$jam$titikdua$menit';
 
-    const url = 'http://localhost:8080/api/v1/appointment/add';
+    var url = '$SERVER_URL/api/v1/appointment/add';
 
     var response = await http.post(Uri.parse(url),
         headers: {
@@ -275,8 +275,7 @@ class _FormAppointmentState extends State<FormAppointment> {
                         await SharedPreferences.getInstance();
                     String? token = await storage.read(key: "jwttoken");
                     var response = await http.get(
-                        Uri.parse(
-                            "http://localhost:8080/api/v1/appointment/list-dokter"),
+                        Uri.parse("$SERVER_URL/api/v1/appointment/list-dokter"),
                         headers: {
                           'Content-Type': 'application/json',
                           'Accept': 'application/json',

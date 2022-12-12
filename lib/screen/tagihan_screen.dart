@@ -26,7 +26,7 @@ class _TagihantState extends State<TagihanScreen> {
     String? token = await storage.read(key: "jwttoken");
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
     String username = decodedToken["sub"];
-    var url = 'http://localhost:8080/api/v1/tagihan/list-tagihan';
+    var url = '$SERVER_URL/api/v1/tagihan/list-tagihan';
     Map<String, String> queryParams = {
       'username': '$username',
     };

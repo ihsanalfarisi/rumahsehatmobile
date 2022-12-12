@@ -29,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     String? token = await storage.read(key: "jwttoken");
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
     String username = decodedToken["sub"];
-    var url = 'http://localhost:8080/api/v1/pasien/profile';
+    var url = '$SERVER_URL/api/v1/pasien/profile';
     Map<String, String> queryParams = {
       'username': '$username',
     };

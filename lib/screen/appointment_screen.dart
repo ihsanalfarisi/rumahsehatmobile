@@ -25,7 +25,7 @@ class _AppointmentState extends State<AppointmentScreen> {
     String? token = await storage.read(key: "jwttoken");
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
     String username = decodedToken["sub"];
-    var url = 'http://localhost:8080/api/v1/appointment/list-appointment';
+    var url = '$SERVER_URL/api/v1/appointment/list-appointment';
     Map<String, String> queryParams = {
       'username': '$username',
     };
