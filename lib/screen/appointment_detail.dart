@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tk_flutter/widget/main_drawer.dart';
 import 'package:tk_flutter/model/appointment_model.dart';
+import '../screen/resep_detail.dart';
 import '../main.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert';
@@ -12,7 +12,6 @@ class AppointmentDetail extends StatelessWidget {
 
   const AppointmentDetail({Key? key, required this.appointment})
       : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -71,15 +70,15 @@ class AppointmentDetail extends StatelessWidget {
                           )),
                       ListTile(
                         title: const Padding(
-                            padding: EdgeInsets.only(bottom: 10.0),
-                            child: Text(
-                              'Status: ',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
+                          padding: EdgeInsets.only(bottom: 10.0),
+                          child: Text(
+                            'Status: ',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
+                        ),
                         subtitle: Text(
-                          appointment.isDone ? "Sudah selesai" : "Belum selesai",
+                          appointment.isDone ? "Selesai" : "Belum selesai",
                           style: const TextStyle(
                               fontSize: 14, color: Colors.black),
                         ),
@@ -100,6 +99,49 @@ class AppointmentDetail extends StatelessWidget {
                             style: const TextStyle(
                                 fontSize: 14, color: Colors.black),
                           )),
+                      appointment.resep == null
+                          ? ListTile()
+                          : ListTile(
+                              title: const Padding(
+                                padding: EdgeInsets.only(bottom: 10.0),
+                                child: Text(
+                                  'Resep: ',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              dense: true,
+                              // subtitle: Text(
+                              //   appointment.dokter.nama,
+                              //   style: const TextStyle(
+                              //       fontSize: 14, color: Colors.black),
+                              // )
+                              subtitle: TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  padding: const EdgeInsets.all(15.0),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  alignment: Alignment.center,
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ResepDetailScreen(
+                                          resep: appointment.resep!,
+                                          namaDokter: appointment.dokter.nama,
+                                          namaPasien: appointment.pasien.nama,
+                                        ),
+                                      ));
+                                },
+                                child: const Text(
+                                  "Resep",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
                     ],
                   ),
                   const Spacer(),
